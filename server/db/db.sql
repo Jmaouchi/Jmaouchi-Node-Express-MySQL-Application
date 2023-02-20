@@ -1,0 +1,3 @@
+DROP DATABASE IF EXISTS training;
+CREATE DATABASE training;
+USE training;
