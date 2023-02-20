@@ -1,0 +1,20 @@
+main{
+  width: 50%;
+  /* this will add margins top and btm 50px and center left right  */
+  margin: 50px auto;
+  /* center the text  */
+  text-align: center;
+}
+
+table{
+  margin: 100px auto;
+}
+
+table, th, td{
+  border-collapse: collapse ;
+  border: 1px solid black;
+}
+
+th, td{
+  padding: 15px;
+}
