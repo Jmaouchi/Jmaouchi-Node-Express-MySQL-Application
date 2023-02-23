@@ -17,6 +17,7 @@ app.use(express.json());
 // Use apiRoutes and attach /api at the front of every route url
 app.use('/api', apiRoutes);
 
+
 // Default response for any other request (Not Found)
 app.use((req, res) => {
   res.status(404).end();
@@ -24,6 +25,11 @@ app.use((req, res) => {
 
 
 // Start server after DB connection
-app.listen(process.env.PORT, () => {
-    console.log(`Server is running on port 3001 😄`);
-})
+db.connect(err => {
+  if (err) throw err;
+  console.log('Database connected.');
+  // start server 
+  app.listen(process.env.PORT, () => {
+    console.log(`Server is running on port ${process.env.PORT} 😄`);
+  })
+});
