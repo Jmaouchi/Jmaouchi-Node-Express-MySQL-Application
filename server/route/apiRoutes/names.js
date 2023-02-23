@@ -2,8 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../db/connection');
 
-
-// get all candidates form the candidate table
+// READ
 router.get('/getAll', (req, res) => {
   const sql = `SELECT * FROM names`;
   // db is to get access to the mysql database, and query is to specify what data we want to get from the database 
@@ -21,7 +20,7 @@ router.get('/getAll', (req, res) => {
 });
 
 
-// get all candidates form the candidate table
+// CREATE
 router.post('/insert', ({ body }, res) => {
   const sql = `INSERT INTO names (name)
   VALUES (?)`;
@@ -41,5 +40,27 @@ router.post('/insert', ({ body }, res) => {
   });
 })
 
+
+// DELETE data by id
+router.delete('/delete/:id', (req, res) => {
+  const sql = `DELETE FROM names WHERE id= ?`;
+  const params =[req.params.id];
+ 
+  db.query(sql, params, (err, result) => {
+    if (err) {
+      res.statusMessage(400).json({ error: res.message });
+    } else if (!result.affectedRows) {
+      res.json({
+        message: 'Name not found'
+      });
+    } else {
+      res.json({
+        message: 'deleted',
+        changes: result.affectedRows,
+        id: req.params.id
+      });
+    }
+  });
+})
 
 module.exports = router;

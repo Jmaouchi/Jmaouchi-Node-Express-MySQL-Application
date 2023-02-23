@@ -1,6 +1,7 @@
 const addBtn = document.querySelector('.add-name-btn');
 
 
+// function to get all data from database
 function fetchData(){
   const URL = 'http://localhost:3001/api/getAll'
   fetch(URL)
@@ -8,7 +9,7 @@ function fetchData(){
   .then(data => loadData(data['data']));
 };
 
-
+// function to display all data that we got back from out fetch (GET)
 function loadData(data){
   const table = document.querySelector('table tbody');
   let tableHtml = '';
@@ -25,7 +26,7 @@ function loadData(data){
       tableHtml += "<tr>";
         tableHtml += `<td>${id}</td>`
         tableHtml += `<td>${name}</td>`
-        tableHtml += `<td>${date_added }</td>`
+        tableHtml += `<td>${new Date(date_added).toISOString()}</td>`
         tableHtml += `<td><button class="delete-row-btn" data-id=${id}>Delete</button></td>`
         tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</button></td>`
       tableHtml += `</tr>`
@@ -35,6 +36,8 @@ function loadData(data){
   }
 }
 
+
+// function that will post name to database (POST)
 function addNameToDB(){
   const nameInput = document.querySelector('#name-input')
   const name = nameInput.value;
@@ -60,9 +63,32 @@ function addNameToDB(){
 
 
 
-function insertRowIntoTable(data){
 
-}
+// function that will 
+function insertRowIntoTable(data){
+    const table = document.querySelector('table tbody');
+    const isTableExist = table.querySelector('.no-data');
+
+    let tableHtml = "<tr>";
+
+    data.forEach(function ({id, name, date_added}){
+      tableHtml += `<td>${id}</td>`
+      tableHtml += `<td>${name}</td>`
+      tableHtml += `<td>${new Date(date_added).toISOString()}</td>`
+      tableHtml += `<td><button class="delete-row-btn" data-id=${id}>Delete</button></td>`
+      tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</button></td>`
+    })
+
+    tableHtml += "</tr>"
+
+
+    if(isTableExist){
+      table.innerHTML = tableHtml;
+    }else{
+      const newRow = table.insertRowIntoTable();
+      newRow.innerHTML = tableHtml;
+    }
+  }
 
 
 
