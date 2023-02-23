@@ -1,4 +1,5 @@
 const addBtn = document.querySelector('.add-name-btn');
+const table = document.querySelector('table tbody');
 
 
 // function to get all data from database
@@ -59,38 +60,52 @@ function addNameToDB(){
       }
       alert('Error: ' + response.statusText);
     })
+    window.location.reload();
 }
 
 
 
 
-// function that will 
-function insertRowIntoTable(data){
-    const table = document.querySelector('table tbody');
-    const isTableExist = table.querySelector('.no-data');
+// // function that will 
+// function insertRowIntoTable(data){
+//     const table = document.querySelector('table tbody');
+//     const isTableExist = table.querySelector('.no-data');
 
-    let tableHtml = "<tr>";
+//     let tableHtml = "<tr>";
 
-    data.forEach(function ({id, name, date_added}){
-      tableHtml += `<td>${id}</td>`
-      tableHtml += `<td>${name}</td>`
-      tableHtml += `<td>${new Date(date_added).toISOString()}</td>`
-      tableHtml += `<td><button class="delete-row-btn" data-id=${id}>Delete</button></td>`
-      tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</button></td>`
-    })
+//     data.forEach(function ({id, name, date_added}){
+//       tableHtml += `<td>${id}</td>`
+//       tableHtml += `<td>${name}</td>`
+//       tableHtml += `<td>${new Date(date_added).toISOString()}</td>`
+//       tableHtml += `<td><button class="delete-row-btn" data-id=${id}>Delete</button></td>`
+//       tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</button></td>`
+//     })
 
-    tableHtml += "</tr>"
+//     tableHtml += "</tr>"
 
 
-    if(isTableExist){
-      table.innerHTML = tableHtml;
+//     if(isTableExist){
+//       table.innerHTML = tableHtml;
+//     }else{
+//       const newRow = table.insertRowIntoTable();
+//       newRow.innerHTML = tableHtml;
+//     }
+//   }
+
+
+// delete row data
+function deleteSingleData(event){
+  const e = event.target.className;
+    if(e==="delete-row-btn"){
+      
     }else{
-      const newRow = table.insertRowIntoTable();
-      newRow.innerHTML = tableHtml;
+      console.log('no');
     }
-  }
+    event.preventDefault();
+}
 
 
 
 addBtn.addEventListener('click', addNameToDB);
-document.addEventListener('DOMContentLoaded', fetchData());
+table.addEventListener('click', deleteSingleData);
+document.addEventListener('DOMContentLoaded', fetchData);
