@@ -38,7 +38,7 @@ function loadData(data){
 }
 
 
-// function that will post name to database (POST)
+// function that will post a name to the database (POST)
 function addNameToDB(){
   const nameInput = document.querySelector('#name-input')
   const name = nameInput.value;
@@ -60,37 +60,8 @@ function addNameToDB(){
       }
       alert('Error: ' + response.statusText);
     })
-    window.location.reload();
+    loadUpdatedData()
 }
-
-
-
-
-// // function that will 
-// function insertRowIntoTable(data){
-//     const table = document.querySelector('table tbody');
-//     const isTableExist = table.querySelector('.no-data');
-
-//     let tableHtml = "<tr>";
-
-//     data.forEach(function ({id, name, date_added}){
-//       tableHtml += `<td>${id}</td>`
-//       tableHtml += `<td>${name}</td>`
-//       tableHtml += `<td>${new Date(date_added).toISOString()}</td>`
-//       tableHtml += `<td><button class="delete-row-btn" data-id=${id}>Delete</button></td>`
-//       tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</button></td>`
-//     })
-
-//     tableHtml += "</tr>"
-
-
-//     if(isTableExist){
-//       table.innerHTML = tableHtml;
-//     }else{
-//       const newRow = table.insertRowIntoTable();
-//       newRow.innerHTML = tableHtml;
-//     }
-//   }
 
 
 // delete row data
@@ -110,14 +81,23 @@ function deleteSingleData(event){
 }
 
 
+// this function will be called whenever a user try to delete a name
 function deleteRowById(id){
   fetch('http://localhost:3001/api/delete/' + id,{
     method:'DELETE'
   })
   .then(response => response.json())
-  .then(data => console.log(data));
+  .then(data => {
+      loadUpdatedData()
+  });
+}
 
-  window.location.reload()
+// function that will load the data again after it is deleted or updated 
+function loadUpdatedData(){
+  const URL = 'http://localhost:3001/api/getAll'
+  fetch(URL)
+  .then(response => response.json())
+  .then(data => loadData(data['data']));
 }
 
 
