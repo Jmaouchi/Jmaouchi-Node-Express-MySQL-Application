@@ -101,7 +101,7 @@ function deleteSingleData(event){
   const d = event.target.dataset;
     if(e==="delete-row-btn"){
       // if we hit the delete btn, then call this function 
-      // deleteRowById(e.id);
+      deleteRowById(d.id);
       console.log(d.id);
     }else{
       console.log('no');
@@ -111,7 +111,13 @@ function deleteSingleData(event){
 
 
 function deleteRowById(id){
+  fetch('http://localhost:3001/api/delete/' + id,{
+    method:'DELETE'
+  })
+  .then(response => response.json())
+  .then(data => console.log(data));
 
+  window.location.reload()
 }
 
 
