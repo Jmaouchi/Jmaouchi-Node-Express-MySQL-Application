@@ -95,13 +95,23 @@ function addNameToDB(){
 
 // delete row data
 function deleteSingleData(event){
+  // get the className of the clicked element
   const e = event.target.className;
+  // get the dataSet of the clicked element
+  const d = event.target.dataset;
     if(e==="delete-row-btn"){
-      
+      // if we hit the delete btn, then call this function 
+      // deleteRowById(e.id);
+      console.log(d.id);
     }else{
       console.log('no');
     }
     event.preventDefault();
+}
+
+
+function deleteRowById(id){
+
 }
 
 
