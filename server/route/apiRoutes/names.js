@@ -63,4 +63,30 @@ router.delete('/delete/:id', (req, res) => {
   });
 })
 
+
+
+// Update a candidate's party
+router.put('/update/:id', (req, res) => {
+  const sql = `UPDATE names SET name = ? 
+               WHERE id = ?`;
+  const params = [req.body.name, req.params.id];
+  db.query(sql, params, (err, result) => {
+    if (err) {
+      res.status(400).json({ error: err.message });
+      // check if a record was found
+    } else if (!result.affectedRows) {
+      res.json({
+        message: 'Candidate not found'
+      });
+    } else {
+      res.json({
+        message: 'success',
+        data: req.body,
+        changes: result.affectedRows
+      });
+    }
+  });
+});
+
+
 module.exports = router;

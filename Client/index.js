@@ -1,5 +1,6 @@
 const addBtn = document.querySelector('.add-name-btn');
 const table = document.querySelector('table tbody');
+const updateDocument = document.querySelector('#update-row');
 
 
 // function to get all data from database
@@ -69,13 +70,15 @@ function deleteSingleData(event){
   // get the className of the clicked element
   const e = event.target.className;
   // get the dataSet of the clicked element
-  const d = event.target.dataset;
+  const datasetId = event.target.dataset;
     if(e==="delete-row-btn"){
       // if we hit the delete btn, then call this function 
-      deleteRowById(d.id);
-      console.log(d.id);
+      deleteRowById(datasetId.id);
+      console.log(datasetId.id);
+    }else if(e==="edit-row-btn"){
+      editRowById(datasetId.id)
     }else{
-      console.log('no');
+      console.log('nope');
     }
     event.preventDefault();
 }
@@ -91,6 +94,22 @@ function deleteRowById(id){
       loadUpdatedData()
   });
 }
+
+
+// this function will be called whenever a user try to delete a name
+function editRowById(id){
+  // make the edit form visible after we click on edit
+  updateDocument.hidden = false;
+  fetch('http://localhost:3001/api/update/' + id,{
+    method:'UPDATE'
+  })
+  .then(response => response.json())
+  .then(data => {
+      loadUpdatedData()
+  });
+}
+
+
 
 // function that will load the data again after it is deleted or updated 
 function loadUpdatedData(){
