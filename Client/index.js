@@ -1,6 +1,8 @@
 const addBtn = document.querySelector('.add-name-btn');
 const table = document.querySelector('table tbody');
 const updateDocument = document.querySelector('#update-row');
+const updateDocumentInput = document.querySelector('#update-name-input');
+const updateDocumentButton = document.querySelector('#update-row-btn')
 
 
 // function to get all data from database
@@ -65,21 +67,20 @@ function addNameToDB(){
 }
 
 
-// delete row data
-function deleteSingleData(event){
+// delete row or update name in a row 
+function deleteOrUpdateSingleData(event){
   // get the className of the clicked element
   const e = event.target.className;
   // get the dataSet of the clicked element
   const datasetId = event.target.dataset;
     if(e==="delete-row-btn"){
-      // if we hit the delete btn, then call this function 
+      //  we will call this funcion and set a data-id attribute = to the id of the edit button, we this it will be easy to update the data by id
       deleteRowById(datasetId.id);
-      console.log(datasetId.id);
     }else if(e==="edit-row-btn"){
-      editRowById(datasetId.id)
-    }else{
-      console.log('nope');
+      //  we will call this funcion and set a data-id attribute = to the id of the edit button, we this it will be easy to update the data by id
+      handleEditRow(datasetId.id)
     }
+
     event.preventDefault();
 }
 
@@ -96,19 +97,36 @@ function deleteRowById(id){
 }
 
 
-// this function will be called whenever a user try to delete a name
-function editRowById(id){
-  // make the edit form visible after we click on edit
+// this function will be called whenever a user try to edit a name
+function handleEditRow(id){
   updateDocument.hidden = false;
-  fetch('http://localhost:3001/api/update/' + id,{
-    method:'UPDATE'
+  // add an id into the button
+  updateDocumentInput.dataset.id = id;
+  console.log(updateDocumentButton.dataset.id);
+}
+
+
+
+// update a name
+function updateName(){
+  // we will get the data-id attribute that is on the input field
+  idInput = updateDocumentInput.dataset.id
+
+  fetch(`http://localhost:3001/api/update/` + idInput,{
+    method:'PUT',
+    headers:{
+      "Content-Type" : "application/json"
+    },
+    body: JSON.stringify({
+      id: idInput,
+      name: updateDocumentInput.value
+    })
   })
   .then(response => response.json())
   .then(data => {
       loadUpdatedData()
   });
 }
-
 
 
 // function that will load the data again after it is deleted or updated 
@@ -122,5 +140,6 @@ function loadUpdatedData(){
 
 
 addBtn.addEventListener('click', addNameToDB);
-table.addEventListener('click', deleteSingleData);
+table.addEventListener('click', deleteOrUpdateSingleData);
+updateDocumentButton.addEventListener('click', updateName)
 document.addEventListener('DOMContentLoaded', fetchData);

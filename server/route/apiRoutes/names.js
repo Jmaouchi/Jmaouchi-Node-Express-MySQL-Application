@@ -65,11 +65,12 @@ router.delete('/delete/:id', (req, res) => {
 
 
 
-// Update a candidate's party
+// Update a name by id
 router.put('/update/:id', (req, res) => {
   const sql = `UPDATE names SET name = ? 
                WHERE id = ?`;
   const params = [req.body.name, req.params.id];
+  console.log(params);
   db.query(sql, params, (err, result) => {
     if (err) {
       res.status(400).json({ error: err.message });

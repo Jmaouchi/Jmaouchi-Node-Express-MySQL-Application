@@ -1,6 +1,7 @@
 
 DROP TABLE IF EXISTS candidates;
 
+
 -- parties table 
 CREATE TABLE names(
   id INTEGER AUTO_INCREMENT PRIMARY KEY,
