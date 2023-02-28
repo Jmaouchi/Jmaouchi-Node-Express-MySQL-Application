@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../../db/connection');
 
-// READ
+// GET all the data that is in the names table
 router.get('/getAll', (req, res) => {
   const sql = `SELECT * FROM names`;
   // db is to get access to the mysql database, and query is to specify what data we want to get from the database 
@@ -20,6 +20,7 @@ router.get('/getAll', (req, res) => {
 });
 
 
+// GET data form the names table by name
 router.get('/search/:name', (req, res) => {
   const sql = `SELECT * FROM names WHERE name = ?`;
   const params = [req.params.name];
@@ -37,7 +38,7 @@ router.get('/search/:name', (req, res) => {
 });
 
 
-// CREATE
+// CREATE a new name and post it to the database
 router.post('/insert', ({ body }, res) => {
   const sql = `INSERT INTO names (name)
   VALUES (?)`;
@@ -83,8 +84,7 @@ router.delete('/delete/:id', (req, res) => {
 })
 
 
-
-// Update a name by id
+// Update a name by its own id
 router.put('/update/:id', (req, res) => {
   const sql = `UPDATE names SET name = ? 
                WHERE id = ?`;
