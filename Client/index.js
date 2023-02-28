@@ -3,7 +3,8 @@ const table = document.querySelector('table tbody');
 const updateDocument = document.querySelector('#update-row');
 const updateDocumentInput = document.querySelector('#update-name-input');
 const updateDocumentButton = document.querySelector('#update-row-btn')
-
+const searchBtn = document.querySelector('#search-btn');
+const searchInput = document.querySelector('#search_input');
 
 // function to get all data from database
 function fetchData(){
@@ -12,34 +13,6 @@ function fetchData(){
   .then(response => response.json())
   .then(data => loadData(data['data']));
 };
-
-// function to display all data that we got back from out fetch (GET)
-function loadData(data){
-  const table = document.querySelector('table tbody');
-  let tableHtml = '';
-  if(data.length === 0){
-    // add a tr into table that will say no data if no data is found
-    // also colspan=5 is to say no data over the whole length of the table
-    table.innerHTML = "<tr><td class='no-data' colspan='5'>No Data</td></tr>";
-  }else{
-    console.log(data);
-    // for(let i = 0; i<data.length ; i++){
-    //   table.innerHTML = `<tr><td class='no-data' colspan='5'>${data[i].name}</td></tr>`;
-    // }
-    data.forEach(function({id, name, date_added }) {
-      tableHtml += "<tr>";
-        tableHtml += `<td>${id}</td>`
-        tableHtml += `<td>${name}</td>`
-        tableHtml += `<td>${new Date(date_added).toISOString()}</td>`
-        tableHtml += `<td><button class="delete-row-btn" data-id=${id}>Delete</button></td>`
-        tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</button></td>`
-      tableHtml += `</tr>`
-    });
-
-    table.innerHTML = tableHtml;
-  }
-}
-
 
 // function that will post a name to the database (POST)
 function addNameToDB(){
@@ -131,8 +104,39 @@ function updateName(){
 
 
 // find by name
+function searchByName(){
+  const searchInputValue = searchInput.value;
+  fetch('http://localhost:3001/api/search/'+ searchInputValue)
+  .then(response => response.json())
+  .then(data => loadData(data['data']));
+}
 
+// function to display all data that we got back from out fetch (GET)
+function loadData(data){
+  const table = document.querySelector('table tbody');
+  let tableHtml = '';
+  if(data.length === 0){
+    // add a tr into table that will say no data if no data is found
+    // also colspan=5 is to say no data over the whole length of the table
+    table.innerHTML = "<tr><td class='no-data' colspan='5'>No Data</td></tr>";
+  }else{
+    console.log(data);
+    // for(let i = 0; i<data.length ; i++){
+    //   table.innerHTML = `<tr><td class='no-data' colspan='5'>${data[i].name}</td></tr>`;
+    // }
+    data.forEach(function({id, name, date_added }) {
+      tableHtml += "<tr>";
+        tableHtml += `<td>${id}</td>`
+        tableHtml += `<td>${name}</td>`
+        tableHtml += `<td>${new Date(date_added).toISOString()}</td>`
+        tableHtml += `<td><button class="delete-row-btn" data-id=${id}>Delete</button></td>`
+        tableHtml += `<td><button class="edit-row-btn" data-id=${id}>Edit</button></td>`
+      tableHtml += `</tr>`
+    });
 
+    table.innerHTML = tableHtml;
+  }
+}
 
 // function that will load the data again after it is deleted or updated 
 function loadUpdatedData(){
@@ -147,5 +151,7 @@ function loadUpdatedData(){
 
 addBtn.addEventListener('click', addNameToDB);
 table.addEventListener('click', deleteOrUpdateSingleData);
-updateDocumentButton.addEventListener('click', updateName)
+updateDocumentButton.addEventListener('click', updateName);
+searchBtn.addEventListener('click', searchByName);
 document.addEventListener('DOMContentLoaded', fetchData);
+

@@ -20,22 +20,21 @@ router.get('/getAll', (req, res) => {
 });
 
 
-// find by name 
-router.get('/getAll/:name', (req,res) => {
-  const sql = `SELECT * FROM names WHERE name= ?`;
-  const params =[req.params.name];
- 
-  db.query(sql, params, (err, result) => {
+router.get('/search/:name', (req, res) => {
+  const sql = `SELECT * FROM names WHERE name = ?`;
+  const params = [req.params.name];
+
+  db.query(sql, params, (err, row) => {
     if (err) {
-      res.statusMessage(400).json({ error: res.message });
-    }else {
-      res.json({
-        message: 'Data is found',
-        name: req.params.name
-      });
+      res.status(400).json({ error: err.message });
+      return;
     }
+    res.json({
+      message: 'success',
+      data: row
+    });
   });
-})
+});
 
 
 // CREATE
