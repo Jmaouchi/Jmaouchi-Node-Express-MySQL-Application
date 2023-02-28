@@ -20,6 +20,24 @@ router.get('/getAll', (req, res) => {
 });
 
 
+// find by name 
+router.get('/getAll/:name', (req,res) => {
+  const sql = `SELECT * FROM names WHERE name= ?`;
+  const params =[req.params.name];
+ 
+  db.query(sql, params, (err, result) => {
+    if (err) {
+      res.statusMessage(400).json({ error: res.message });
+    }else {
+      res.json({
+        message: 'Data is found',
+        name: req.params.name
+      });
+    }
+  });
+})
+
+
 // CREATE
 router.post('/insert', ({ body }, res) => {
   const sql = `INSERT INTO names (name)
@@ -49,10 +67,12 @@ router.delete('/delete/:id', (req, res) => {
   db.query(sql, params, (err, result) => {
     if (err) {
       res.statusMessage(400).json({ error: res.message });
+      // if the row you want to delete is not available or its being deleted 
     } else if (!result.affectedRows) {
       res.json({
         message: 'Name not found'
       });
+    // else return this json data
     } else {
       res.json({
         message: 'deleted',

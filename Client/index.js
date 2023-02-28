@@ -129,6 +129,11 @@ function updateName(){
 }
 
 
+
+// find by name
+
+
+
 // function that will load the data again after it is deleted or updated 
 function loadUpdatedData(){
   const URL = 'http://localhost:3001/api/getAll'
@@ -136,6 +141,7 @@ function loadUpdatedData(){
   .then(response => response.json())
   .then(data => loadData(data['data']));
 }
+
 
 
 
