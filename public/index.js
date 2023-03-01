@@ -14,6 +14,7 @@ function fetchData(){
   .then(data => loadData(data['data']));
 };
 
+
 // function that will post a name to the database (POST)
 function addNameToDB(){
   const nameInput = document.querySelector('#name-input')
@@ -79,7 +80,6 @@ function handleEditRow(id){
 }
 
 
-
 // update a name
 function updateName(){
   // we will get the data-id attribute that is on the input field
@@ -111,6 +111,7 @@ function searchByName(){
   .then(data => loadData(data['data']));
 }
 
+
 // function to display all data that we got back from out fetch (GET)
 function loadData(data){
   const table = document.querySelector('table tbody');
@@ -137,6 +138,7 @@ function loadData(data){
     table.innerHTML = tableHtml;
   }
 }
+
 
 // function that will load the data again after it is deleted or updated 
 function loadUpdatedData(){
