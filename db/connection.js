@@ -5,7 +5,7 @@ require('dotenv').config();
 // Connect to database
 const db = mysql.createConnection(
   {
-    host: process.env.JAWSDB_URL,
+    host: 'localhost',
     // Your MySQL username,
     user: process.env.DB_USER,
     // Your MySQL password
